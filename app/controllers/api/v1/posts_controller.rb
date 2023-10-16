@@ -6,6 +6,8 @@ class Api::V1::PostsController < ApplicationController
         #else
         #render json:{status:400, error: "posts can't found"}
         #end
+    puts "user parameter check"
+    puts params
     page = params[:page].to_i || 1
     per_page = 100
 
@@ -20,18 +22,31 @@ class Api::V1::PostsController < ApplicationController
     render json: @post_data
   
     end
-    def show 
-        p"===================="
-        p params 
-        p"================="
-        post=Post.find(params[:id])
-          p"===================="
-        p params
-        p"================="
-         render json: post
-          p"===================="
-        p params
-        p"================="
+    # def show 
+    #     p"===================="
+    #     p params 
+    #     p"================="
+    #     post=Post.find(params[:id])
+    #   　p"===================="#インテンド揃うこと注意しましょう。
+    #     p params
+    #     p"================="
+    #     render json: post
+    #   　p"===================="
+    #     p params
+    #     p"================="
+    # end
+    
+    #問題の要件をしっかり理解して取り組みましょう。
+    
+    def update
+      posts = Post.find(params[:id])
+      posts.update(post_params)
+      render json: {status: 201, data: posts }
+    end
+
+    private
+    def post_params
+        params.permit(:title, :body)
     end
     
 end
