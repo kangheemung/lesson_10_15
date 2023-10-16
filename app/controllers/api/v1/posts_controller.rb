@@ -22,6 +22,15 @@ class Api::V1::PostsController < ApplicationController
     render json: @post_data
   
     end
+    def create
+      post=Post.new(post_params)
+       
+      if post.save
+        render json: { status: 201, data: post }
+      else
+        render json: { status: 422, errors: post.errors.full_messages }
+      end
+    end
     # def show 
     #     p"===================="
     #     p params 
@@ -42,6 +51,14 @@ class Api::V1::PostsController < ApplicationController
       posts = Post.find(params[:id])
       posts.update(post_params)
       render json: {status: 201, data: posts }
+    end
+    def destroy
+        post=Post.find(params[:id])
+       if post.destroy
+          render json: { status: 200, message: 'Post successfully destroyed' }
+       else
+          render json: { status: 500, error: 'Internal Server Error' }
+       end
     end
 
     private
